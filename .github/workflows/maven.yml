@@ -1,0 +1,28 @@
+name: git to cloudhub
+
+on:
+  push:
+    branches: [ develop ]
+  pull_request:
+    branches: [ develop ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout develop
+      uses: actions/checkout@v3
+    - name: Build and deploy with Maven
+      run: mvn clean -B deploy -DmuleDeploy -s .maven/settings.xml
+      env:
+          username: ${{ secrets.username }}
+          password: ${{ secrets.password }}
+          appName: ${{ secrets.appName }}
+          environment: ${{ secrets.environment }}
+          region: ${{ secrets.region }}
+          workers: ${{ secrets.workers }}
+          workerType: ${{ secrets.workerType }}
+          u: ${{ secrets.u }}
+          p: ${{ secrets.p }}
